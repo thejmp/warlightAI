@@ -17,7 +17,6 @@ Bot::~Bot()
 
 void Bot::playGame()
 {
-
     parser.initParser(this);
     parser.parseInput();
 }    //plays a single game of Warlight
@@ -104,12 +103,34 @@ void Bot::executeAction()
     }
     if (phase == "place_armies")
     {
-        cout << botName << " place_armies " << ownedRegions[0] << " " << armiesLeft <<"\n";
+		cout << botName << " place_armies " << ownedRegions[0] << " " << 2 << ", ";
+		cout << botName << " place_armies " << ownedRegions[1] << " " << 2 << ", ";
+		armiesLeft -= 4;
+		cout << botName << " place_armies " << ownedRegions[2] << " " << armiesLeft << "\n";
     }
     if (phase == "attack/transfer")
     {
-            cout << "No moves\n" ;
-//          cout << botName << " attack/transfer " << from << " " << to << " "<< armiesMoved;
+		vector<int> temp;
+		int j;
+		bool move = false;
+		bool goodMove = false;
+		for (int i = 0; i < ownedRegions.size(); i++)
+		{
+			if (regions[ownedRegions[i]].getArmies() > 4)
+			{
+				temp = regions[ownedRegions[i]].getNeighbors();
+				for (j = 0; regions[temp[j]].getOwner() != "neutral"; ++j);
+				cout << botName << " attack/transfer " << ownedRegions[i] << " " << temp[j] << " " << regions[ownedRegions[i]].getArmies() - 1;
+				move = true;
+				cout << ", ";
+			}
+		}
+			cout << "\n";
+		if (!move)
+		{
+			cout << "No moves\n" ;
+		}
+		goodMove = false;
     }
     phase.clear();
 }
