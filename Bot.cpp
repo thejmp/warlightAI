@@ -111,26 +111,31 @@ void Bot::executeAction()
     if (phase == "attack/transfer")
     {
 		vector<int> temp;
-		int j;
+		int j = 0;
 		bool move = false;
-		bool goodMove = false;
 		for (int i = 0; i < ownedRegions.size(); i++)
 		{
 			if (regions[ownedRegions[i]].getArmies() > 4)
 			{
 				temp = regions[ownedRegions[i]].getNeighbors();
-				for (j = 0; regions[temp[j]].getOwner() != "neutral"; ++j);
+				while (j == temp.size() - 1)
+				{
+					if (regions[temp[j]].getOwner() == "neutral")
+						break;
+					j++;
+				}
 				cout << botName << " attack/transfer " << ownedRegions[i] << " " << temp[j] << " " << regions[ownedRegions[i]].getArmies() - 1;
 				move = true;
-				cout << ", ";
+				if (i != ownedRegions.size() - 1)
+					cout << ", ";
+				else
+					cout << endl;
 			}
 		}
-			cout << "\n";
 		if (!move)
 		{
 			cout << "No moves\n" ;
 		}
-		goodMove = false;
     }
     phase.clear();
 }
