@@ -104,38 +104,37 @@ void Bot::executeAction()
     if (phase == "place_armies")
     {
 		cout << botName << " place_armies " << ownedRegions[0] << " " << 2 << ", ";
+		regions[ownedRegions[0]].setArmies(regions[ownedRegions[0]].getArmies() + 2);
 		cout << botName << " place_armies " << ownedRegions[1] << " " << 2 << ", ";
+		regions[ownedRegions[1]].setArmies(regions[ownedRegions[1]].getArmies() + 2);
 		armiesLeft -= 4;
 		cout << botName << " place_armies " << ownedRegions[2] << " " << armiesLeft << "\n";
+		regions[ownedRegions[2]].setArmies(regions[ownedRegions[2]].getArmies() + 2);
     }
     if (phase == "attack/transfer")
     {
 		vector<int> temp;
-		int j = 0;
 		bool move = false;
+		int j = 0;
 		for (int i = 0; i < ownedRegions.size(); i++)
 		{
 			if (regions[ownedRegions[i]].getArmies() > 4)
 			{
 				temp = regions[ownedRegions[i]].getNeighbors();
-				while (j == temp.size() - 1)
+				int size = temp.size();
+				for (j = 0; j < size - 1; j++)
 				{
-					if (regions[temp[j]].getOwner() == "neutral")
+					if (regions[temp[j]].getOwner() == "neutral" || regions[temp[j]].getOwner() == opponentBotName)
 						break;
-					j++;
 				}
-				cout << botName << " attack/transfer " << ownedRegions[i] << " " << temp[j] << " " << regions[ownedRegions[i]].getArmies() - 1;
+				cout << botName << " attack/transfer " << ownedRegions[i] << " " << temp[j] << " " << regions[ownedRegions[i]].getArmies() - 1 << ", ";
 				move = true;
-				if (i != ownedRegions.size() - 1)
-					cout << ", ";
-				else
-					cout << endl;
 			}
 		}
-		if (!move)
-		{
-			cout << "No moves\n" ;
-		}
+		if (move)
+			cout << endl;
+		else
+			cout << "No moves\n";
     }
     phase.clear();
 }
