@@ -118,7 +118,6 @@ void Bot::executeAction()
 					cout << botName << " place_armies " << ownedRegions[i] << " " << armiesToPlace << ", ";
 					regions[ownedRegions[i]].setArmies(regions[ownedRegions[i]].getArmies() + armiesToPlace);
 					armiesLeft -= armiesToPlace;
-
 					break;
 				}
 				else if ((regions[temp[j]].getOwner() == "neutral" || regions[temp[j]].getOwner() == opponentBotName) && armiesLeft > 0)
